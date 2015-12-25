@@ -1,7 +1,10 @@
 using System;
 using System.Configuration;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
+using CodeFirstStoreFunctions;
 using IndividualLoginExample.Models;
 
 namespace IndividualLoginExample
@@ -47,12 +50,38 @@ namespace IndividualLoginExample
         #region Method Overrides
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>();
-            //.MapToStoredProcedures(b =>
-            //{
-            //});
+            modelBuilder.Conventions.Add(new FunctionsConvention<MyDBContext>("dbo"));
+
+            modelBuilder.Entity<User>().MapToStoredProcedures(b =>
+            {
+                b.Insert(c => c.HasName("UserInsert"));
+                b.Update(c => c.HasName("UserUpdate"));
+                b.Delete(c => c.HasName("UserDelete"));
+            });
 
             base.OnModelCreating(modelBuilder);
+        }
+        #endregion
+
+        #region Stored Procedures
+        // [DbFunction("dbo", "GetUsers")]
+        public ObjectResult<User> GetUsers(int? id = null, string userName = null)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<User>(
+                "GetUsers",
+                GetObjParameter("Id", typeof(int), id),
+                GetObjParameter("UserName", typeof(string), userName));
+        }
+        #endregion
+
+        #region Private Methods
+        private ObjectParameter GetObjParameter(string name, Type type, object value)
+        {
+            var result = new ObjectParameter(name, type);
+            if (value != null)
+                result.Value = value;
+
+            return result;
         }
         #endregion
     }

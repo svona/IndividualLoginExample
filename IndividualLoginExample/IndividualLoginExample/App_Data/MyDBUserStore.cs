@@ -37,12 +37,14 @@ namespace IndividualLoginExample
         #region Read
         public Task<User> FindByIdAsync(int userId)
         {
-            throw new NotImplementedException();
+            var res = db.GetUsers(id: userId).SingleOrDefault();
+            return Task.FromResult<User>(res);
         }
 
         public Task<User> FindByNameAsync(string userName)
         {
-            throw new NotImplementedException();
+            var res = db.GetUsers(userName: userName).SingleOrDefault();
+            return Task.FromResult<User>(res);
         }
         #endregion
 
@@ -70,5 +72,7 @@ namespace IndividualLoginExample
             }
         }
         #endregion
+
+
     }
 }
