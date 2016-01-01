@@ -33,13 +33,18 @@ namespace IndividualLoginExample.Models
             protected set;
         }
 
+        [Required]
         [StringLength(100)]
         public string UserName
         {
             get; set;
         }
         #endregion
-        
+
+        [Required]
+        [StringLength(68)]
+        public string PasswordHash { get; set; }
+
         public DateTime CreationDateUTC { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(AppUserManager manager)

@@ -19,7 +19,6 @@ namespace IndividualLoginExample
     {
         public void Configuration(IAppBuilder app)
         {
-
             // Configure the db context, user manager and signin manager to use a single instance per request
             app.CreatePerOwinContext(MyDBContext.Create);
             app.CreatePerOwinContext<AppUserManager>(AppUserManager.Create);
