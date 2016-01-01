@@ -18,6 +18,14 @@ namespace IndividualLoginExample
             this.Database.Log += (s) => { System.Diagnostics.Debug.WriteLine(s.ToString()); };
         }
         #endregion
+
+        #region Factory Methods
+        public static MyDBContext Create()
+        {
+            return new MyDBContext();
+        }
+        #endregion
+
         #region Encapsulation of DbSets
         public T Add<T>(T entity) where T : class
         {

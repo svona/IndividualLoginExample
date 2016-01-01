@@ -72,7 +72,5 @@ namespace IndividualLoginExample
             }
         }
         #endregion
-
-
     }
 }
