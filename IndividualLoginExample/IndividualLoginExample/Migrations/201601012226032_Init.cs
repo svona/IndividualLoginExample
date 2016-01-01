@@ -10,11 +10,11 @@ namespace IndividualLoginExample.Migrations
             CreateTable(
                 "dbo.Users",
                 c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        UserName = c.String(nullable: false, maxLength: 100),
-                        PasswordHash = c.String(nullable: false, maxLength: 68),
-                        CreationDateUTC = c.DateTime(nullable: false, defaultValueSql: "GETUTCDATE()"),
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    UserName = c.String(nullable: false, maxLength: 100),
+                    PasswordHash = c.String(nullable: false, maxLength: 68),
+                    CreationDateUTC = c.DateTime(nullable: false, defaultValueSql: "GETUTCDATE()"),
                 })
                 .PrimaryKey(t => t.Id);
 

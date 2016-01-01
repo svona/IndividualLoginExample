@@ -184,6 +184,7 @@
       <DependentUpon>201601012226032_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="App_Data\MyDBUserStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
