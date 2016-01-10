@@ -15,6 +15,11 @@ namespace IndividualLoginExample.Models
         public string UserName { get; set; }
 
         [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Required]
         [PasswordStringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]

@@ -180,9 +180,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="App_Data\MyDBContext.cs" />
-    <Compile Include="Migrations\201601100337013_Init.cs" />
-    <Compile Include="Migrations\201601100337013_Init.Designer.cs">
-      <DependentUpon>201601100337013_Init.cs</DependentUpon>
+    <Compile Include="Migrations\201601101938306_Init.cs" />
+    <Compile Include="Migrations\201601101938306_Init.Designer.cs">
+      <DependentUpon>201601101938306_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
@@ -251,6 +251,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -261,8 +262,8 @@
     <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201601100337013_Init.resx">
-      <DependentUpon>201601100337013_Init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201601101938306_Init.resx">
+      <DependentUpon>201601101938306_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

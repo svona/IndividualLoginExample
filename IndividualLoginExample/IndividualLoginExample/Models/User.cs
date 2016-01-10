@@ -49,6 +49,21 @@ namespace IndividualLoginExample.Models
         public string PasswordHash { get; set; }
 
         public DateTime CreationDateUTC { get; set; }
+
+        public DateTime? LockoutEndDateUtc { get; set; }
+
+        public int AccessFailedCount { get; set; }
+
+        public bool LockoutEnabled { get; set; }
+
+        public bool TwoFactorEnabled { get; set; }
+
+        [Required]
+        [EmailAddress]
+        [StringLength(100)]
+        public string Email { get; set; }
+
+        public bool EmailConfirmed { get; set; }
         #endregion
 
         #region Navigation Properties

@@ -74,12 +74,13 @@ namespace IndividualLoginExample
 
         #region Stored Procedures
         // [DbFunction("dbo", "GetUsers")]
-        public ObjectResult<User> GetUsers(int? id = null, string userName = null)
+        public ObjectResult<User> GetUsers(int? id = null, string userName = null, string email = null)
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<User>(
                 "GetUsers",
                 GetObjParameter("Id", typeof(int), id),
-                GetObjParameter("UserName", typeof(string), userName));
+                GetObjParameter("UserName", typeof(string), userName),
+                GetObjParameter("Email", typeof(string), email));
         }
 
         public ObjectResult<UserPasswordHistory> GetUserPasswordHistory(int? id = null, int? userId = null)

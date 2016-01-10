@@ -11,26 +11,32 @@ namespace IndividualLoginExample.Migrations
                 "dbo.Users",
                 c => new
                 {
-                        Id = c.Int(nullable: false, identity: true),
-                        UserName = c.String(nullable: false, maxLength: 100),
-                        PasswordHash = c.String(nullable: false, maxLength: 68),
-                        CreationDateUTC = c.DateTime(nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    Id = c.Int(nullable: false, identity: true),
+                    UserName = c.String(nullable: false, maxLength: 100),
+                    PasswordHash = c.String(nullable: false, maxLength: 68),
+                    CreationDateUTC = c.DateTime(nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    LockoutEndDateUtc = c.DateTime(),
+                    AccessFailedCount = c.Int(nullable: false),
+                    LockoutEnabled = c.Boolean(nullable: false),
+                    TwoFactorEnabled = c.Boolean(nullable: false),
+                    Email = c.String(nullable: false, maxLength: 100),
+                    EmailConfirmed = c.Boolean(nullable: false),
                 })
-                .PrimaryKey(t => t.Id, "PK_Users");
-
+                .PrimaryKey(t => t.Id, name:"PK_Users");
+            
             CreateTable(
                 "dbo.UserPasswordHistory",
                 c => new
                 {
-                        Id = c.Int(nullable: false, identity: true),
-                        UserId = c.Int(nullable: false),
-                        PasswordHash = c.String(nullable: false, maxLength: 68),
-                        CreatedBy = c.String(nullable: false, maxLength: 100),
-                        CreationDateUTC = c.DateTime(nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    Id = c.Int(nullable: false, identity: true),
+                    UserId = c.Int(nullable: false),
+                    PasswordHash = c.String(nullable: false, maxLength: 68),
+                    CreatedBy = c.String(nullable: false, maxLength: 100),
+                    CreationDateUTC = c.DateTime(nullable: false, defaultValueSql: "GETUTCDATE()"),
                 })
                 .PrimaryKey(t => t.Id, "PK_UserPasswordHistory")
                 .ForeignKey("dbo.Users", t => t.UserId, false, "FK_Users_UserPasswordHistory")
-                .Index(t => t.UserId);
+                .Index(t => t.UserId, name: "IX_UserPasswordHistory_UserId");
             
             CreateStoredProcedure(
                 "dbo.UserInsert",
@@ -39,6 +45,12 @@ namespace IndividualLoginExample.Migrations
                         UserName = p.String(maxLength: 100),
                         PasswordHash = p.String(maxLength: 68),
                         CreationDateUTC = p.DateTime(),
+                        LockoutEndDateUtc = p.DateTime(),
+                        AccessFailedCount = p.Int(),
+                        LockoutEnabled = p.Boolean(),
+                        TwoFactorEnabled = p.Boolean(),
+                        Email = p.String(maxLength: 100),
+                        EmailConfirmed = p.Boolean(),
                     },
                     body: @"
 SET NOCOUNT ON;
@@ -50,18 +62,18 @@ declare @tempUsers table
 	PasswordHash nvarchar(68)
 )
 
-INSERT [dbo].[Users]([UserName], [CreationDateUTC],PasswordHash)
+INSERT [dbo].[Users]([UserName], [PasswordHash], [CreationDateUTC], [LockoutEndDateUtc], [AccessFailedCount], [LockoutEnabled], [TwoFactorEnabled], [Email], [EmailConfirmed])
 output inserted.id, inserted.CreationDateUTC, inserted.PasswordHash
 into @tempUsers
-VALUES (@UserName, @CreationDateUTC,@PasswordHash)
-    
+VALUES (@UserName, @PasswordHash, @CreationDateUTC, @LockoutEndDateUtc, @AccessFailedCount, @LockoutEnabled, @TwoFactorEnabled, @Email, @EmailConfirmed)
+
 insert into UserPasswordHistory(userId, createdby, creationDateUTC, passwordHash)
 select UserId, '', CreationDateUTC, PasswordHash
 from @tempUsers
 
 select CAST(SCOPE_IDENTITY() AS INT) as Id"
             );
-            
+
             CreateStoredProcedure(
                 "dbo.UserUpdate",
                 p => new
@@ -70,29 +82,41 @@ select CAST(SCOPE_IDENTITY() AS INT) as Id"
                         UserName = p.String(maxLength: 100),
                         PasswordHash = p.String(maxLength: 68),
                         CreationDateUTC = p.DateTime(),
+                        LockoutEndDateUtc = p.DateTime(),
+                        AccessFailedCount = p.Int(),
+                        LockoutEnabled = p.Boolean(),
+                        TwoFactorEnabled = p.Boolean(),
+                        Email = p.String(maxLength: 100),
+                        EmailConfirmed = p.Boolean(),
                     },
                 body:
                     @"
 SET NOCOUNT ON;
-
-UPDATE Users
-SET [UserName] = @UserName,
-PasswordHash=@PasswordHash,
-[CreationDateUTC] = @CreationDateUTC
+UPDATE [dbo].[Users]
+SET [UserName] = @UserName, 
+[PasswordHash] = @PasswordHash, 
+[CreationDateUTC] = @CreationDateUTC, 
+[LockoutEndDateUtc] = @LockoutEndDateUtc, 
+[AccessFailedCount] = @AccessFailedCount, 
+[LockoutEnabled] = @LockoutEnabled, 
+[TwoFactorEnabled] = @TwoFactorEnabled, 
+[Email] = @Email, 
+[EmailConfirmed] = @EmailConfirmed
 WHERE [Id] = @Id
+                      
 
 insert into UserPasswordHistory(userId, createdby, creationDateUTC, passwordHash)
 select Id, '', CreationDateUTC, PasswordHash
 from Users
 WHERE Id = @Id"
             );
-            
+
             CreateStoredProcedure(
                 "dbo.UserDelete",
                 p => new
-                    {
-                        Id = p.Int(),
-                    },
+                {
+                    Id = p.Int(),
+                },
                 body:
                     @"
 SET NOCOUNT ON;
@@ -106,15 +130,17 @@ WHERE [Id] = @Id"
                 c => new
                 {
                     Id = c.Int(defaultValueSql: "NULL"),
-                    UserName = c.String(maxLength: 100, unicode: true, defaultValueSql: "NULL")
+                    UserName = c.String(maxLength: 100, unicode: true, defaultValueSql: "NULL"),
+                    Email = c.String(maxLength: 100, unicode: true, defaultValueSql: "NULL")
                 },
    @"
 SET NOCOUNT ON;
 
-select Id, UserName, PasswordHash,CreationDateUTC
+select Id, UserName, PasswordHash,CreationDateUTC,LockoutEndDateUtc,AccessFailedCount,LockoutEnabled,TwoFactorEnabled,Email, EmailConfirmed
 from users
 where (Id = @Id or @Id is null)
 and (UserName = @UserName or @UserName is null)
+and (Email = @Email or @Email is null)
 ");
 
             CreateStoredProcedure(

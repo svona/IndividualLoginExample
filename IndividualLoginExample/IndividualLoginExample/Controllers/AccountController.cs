@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using IndividualLoginExample.Models;
 using IndividualLoginExample.Properties;
+using Microsoft.Owin;
 using Microsoft.AspNet.Identity;
 
 namespace IndividualLoginExample.Controllers
@@ -60,6 +62,16 @@ namespace IndividualLoginExample.Controllers
         }
         #endregion
 
+        #region Logout
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Logout()
+        {
+            HttpContext.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            return RedirectToAction("Index", "Home");
+        }
+        #endregion
+
         #region Register
         [AllowAnonymous]
         public ActionResult Register()
@@ -74,7 +86,7 @@ namespace IndividualLoginExample.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = model.UserName };
+                var user = new User { UserName = model.UserName, Email = model.Email };
                 var result = await this.UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
