@@ -21,9 +21,12 @@ namespace IndividualLoginExample.Models
         /// </summary>
         public User()
         {
-            CreationDateUTC = DateTime.UtcNow;
+            this.CreationDateUTC = DateTime.UtcNow;
+            this.UserPasswordHistoryList = new List<UserPasswordHistory>();
         }
         #endregion
+
+        #region Public Properties
 
         #region IUser Implementation
         [Key]
@@ -46,7 +49,14 @@ namespace IndividualLoginExample.Models
         public string PasswordHash { get; set; }
 
         public DateTime CreationDateUTC { get; set; }
+        #endregion
 
+        #region Navigation Properties
+        [ForeignKey("UserId")]
+        public virtual ICollection<UserPasswordHistory> UserPasswordHistoryList { get; set; }
+        #endregion
+
+        #region Public Methods
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(AppUserManager manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -54,5 +64,6 @@ namespace IndividualLoginExample.Models
             // Add custom user claims here
             return userIdentity;
         }
+        #endregion
     }
 }

@@ -172,6 +172,7 @@
     <Compile Include="App_Start\IdentityConfig\AppUserManager.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="DataAnnotations\PasswordStringLength.cs" />
     <Compile Include="Helpers\MyEmailService.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -179,14 +180,16 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="App_Data\MyDBContext.cs" />
-    <Compile Include="Migrations\201601012226032_Init.cs" />
-    <Compile Include="Migrations\201601012226032_Init.Designer.cs">
-      <DependentUpon>201601012226032_Init.cs</DependentUpon>
+    <Compile Include="Migrations\201601100337013_Init.cs" />
+    <Compile Include="Migrations\201601100337013_Init.Designer.cs">
+      <DependentUpon>201601100337013_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
+    <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="App_Data\MyDBUserStore.cs" />
+    <Compile Include="Models\UserPasswordHistory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -247,6 +250,7 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -257,8 +261,8 @@
     <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201601012226032_Init.resx">
-      <DependentUpon>201601012226032_Init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201601100337013_Init.resx">
+      <DependentUpon>201601100337013_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

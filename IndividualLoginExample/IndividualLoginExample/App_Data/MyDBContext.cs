@@ -60,12 +60,13 @@ namespace IndividualLoginExample
         {
             modelBuilder.Conventions.Add(new FunctionsConvention<MyDBContext>("dbo"));
 
-            modelBuilder.Entity<User>().MapToStoredProcedures(b =>
+            var userConfig = modelBuilder.Entity<User>();
+            userConfig.MapToStoredProcedures(b =>
             {
                 b.Insert(c => c.HasName("UserInsert"));
                 b.Update(c => c.HasName("UserUpdate"));
                 b.Delete(c => c.HasName("UserDelete"));
-            });
+            }).HasMany(b => b.UserPasswordHistoryList).WithRequired(b => b.User).WillCascadeOnDelete(false);
 
             base.OnModelCreating(modelBuilder);
         }
@@ -79,6 +80,14 @@ namespace IndividualLoginExample
                 "GetUsers",
                 GetObjParameter("Id", typeof(int), id),
                 GetObjParameter("UserName", typeof(string), userName));
+        }
+
+        public ObjectResult<UserPasswordHistory> GetUserPasswordHistory(int? id = null, int? userId = null)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<UserPasswordHistory>(
+                "GetUserPasswordHistory",
+                GetObjParameter("Id", typeof(int), id),
+                GetObjParameter("Userid", typeof(int), userId));
         }
         #endregion
 

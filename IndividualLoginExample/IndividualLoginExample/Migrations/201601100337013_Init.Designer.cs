@@ -13,7 +13,7 @@ namespace IndividualLoginExample.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201601012226032_Init"; }
+            get { return "201601100337013_Init"; }
         }
         
         string IMigrationMetadata.Source
