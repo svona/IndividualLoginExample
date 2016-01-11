@@ -14,7 +14,8 @@ namespace IndividualLoginExample
         IUserPasswordStore<User, int>,
         IUserLockoutStore<User, int>,
         IUserTwoFactorStore<User, int>,
-        IUserEmailStore<User, int>
+        IUserEmailStore<User, int>,
+        IUserSecurityStampStore<User, int>
     {
         #region Private Members
         private MyDBContext db;
@@ -250,6 +251,27 @@ namespace IndividualLoginExample
 
             var res = db.GetUsers(email: email).SingleOrDefault();
             return Task.FromResult<User>(res);
+        }
+        #endregion
+
+        #region IUserSecurityStampStore Implementation
+        public Task SetSecurityStampAsync(User user, string stamp)
+        {
+            this.ThrowIfDisposed();
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+
+            user.SecurityStamp = stamp;
+            return Task.FromResult(0);
+        }
+
+        public Task<string> GetSecurityStampAsync(User user)
+        {
+            this.ThrowIfDisposed();
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+
+            return Task<string>.FromResult(user.SecurityStamp);
         }
         #endregion
 

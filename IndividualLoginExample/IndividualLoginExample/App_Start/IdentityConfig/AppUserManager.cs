@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using IndividualLoginExample.Crypto;
 using IndividualLoginExample.Helpers;
 using IndividualLoginExample.Models;
 using IndividualLoginExample.Properties;
@@ -24,6 +25,8 @@ namespace IndividualLoginExample.App_Start.IdentityConfig
         {
             var manager = new AppUserManager(new MyDBUserStore());
             manager.UserValidator = new UserValidator<User, int>(manager);
+
+            manager.PasswordHasher = new MyCustomPasswordHasher();
 
             manager.PasswordValidator = new PasswordValidator
             {

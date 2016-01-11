@@ -21,9 +21,10 @@ namespace IndividualLoginExample.Migrations
                     TwoFactorEnabled = c.Boolean(nullable: false),
                     Email = c.String(nullable: false, maxLength: 100),
                     EmailConfirmed = c.Boolean(nullable: false),
+                    SecurityStamp = c.String(nullable: false),
                 })
-                .PrimaryKey(t => t.Id, name:"PK_Users");
-            
+                .PrimaryKey(t => t.Id, name: "PK_Users");
+
             CreateTable(
                 "dbo.UserPasswordHistory",
                 c => new
@@ -37,7 +38,7 @@ namespace IndividualLoginExample.Migrations
                 .PrimaryKey(t => t.Id, "PK_UserPasswordHistory")
                 .ForeignKey("dbo.Users", t => t.UserId, false, "FK_Users_UserPasswordHistory")
                 .Index(t => t.UserId, name: "IX_UserPasswordHistory_UserId");
-            
+
             CreateStoredProcedure(
                 "dbo.UserInsert",
                 p => new
@@ -51,6 +52,7 @@ namespace IndividualLoginExample.Migrations
                         TwoFactorEnabled = p.Boolean(),
                         Email = p.String(maxLength: 100),
                         EmailConfirmed = p.Boolean(),
+                        SecurityStamp = p.String(),
                     },
                     body: @"
 SET NOCOUNT ON;
@@ -62,10 +64,10 @@ declare @tempUsers table
 	PasswordHash nvarchar(68)
 )
 
-INSERT [dbo].[Users]([UserName], [PasswordHash], [CreationDateUTC], [LockoutEndDateUtc], [AccessFailedCount], [LockoutEnabled], [TwoFactorEnabled], [Email], [EmailConfirmed])
+INSERT [dbo].[Users]([UserName], [PasswordHash], [CreationDateUTC], [LockoutEndDateUtc], [AccessFailedCount], [LockoutEnabled], [TwoFactorEnabled], [Email], [EmailConfirmed], [SecurityStamp])
 output inserted.id, inserted.CreationDateUTC, inserted.PasswordHash
 into @tempUsers
-VALUES (@UserName, @PasswordHash, @CreationDateUTC, @LockoutEndDateUtc, @AccessFailedCount, @LockoutEnabled, @TwoFactorEnabled, @Email, @EmailConfirmed)
+VALUES (@UserName, @PasswordHash, @CreationDateUTC, @LockoutEndDateUtc, @AccessFailedCount, @LockoutEnabled, @TwoFactorEnabled, @Email, @EmailConfirmed, @SecurityStamp)
 
 insert into UserPasswordHistory(userId, createdby, creationDateUTC, passwordHash)
 select UserId, '', CreationDateUTC, PasswordHash
@@ -88,6 +90,7 @@ select CAST(SCOPE_IDENTITY() AS INT) as Id"
                         TwoFactorEnabled = p.Boolean(),
                         Email = p.String(maxLength: 100),
                         EmailConfirmed = p.Boolean(),
+                        SecurityStamp = p.String(),
                     },
                 body:
                     @"
@@ -100,10 +103,9 @@ SET [UserName] = @UserName,
 [AccessFailedCount] = @AccessFailedCount, 
 [LockoutEnabled] = @LockoutEnabled, 
 [TwoFactorEnabled] = @TwoFactorEnabled, 
-[Email] = @Email, 
-[EmailConfirmed] = @EmailConfirmed
-WHERE [Id] = @Id
-                      
+[Email] = @Email, [EmailConfirmed] = @EmailConfirmed, 
+[SecurityStamp] = @SecurityStamp
+WHERE [Id] = @Id                      
 
 insert into UserPasswordHistory(userId, createdby, creationDateUTC, passwordHash)
 select Id, '', CreationDateUTC, PasswordHash
@@ -136,7 +138,7 @@ WHERE [Id] = @Id"
    @"
 SET NOCOUNT ON;
 
-select Id, UserName, PasswordHash,CreationDateUTC,LockoutEndDateUtc,AccessFailedCount,LockoutEnabled,TwoFactorEnabled,Email, EmailConfirmed
+select Id, UserName, PasswordHash,CreationDateUTC,LockoutEndDateUtc,AccessFailedCount,LockoutEnabled,TwoFactorEnabled,Email, EmailConfirmed,SecurityStamp
 from users
 where (Id = @Id or @Id is null)
 and (UserName = @UserName or @UserName is null)

@@ -15,7 +15,9 @@ namespace IndividualLoginExample
         public MyDBContext()
             : base(ConfigurationManager.ConnectionStrings["MyDB"].ConnectionString)
         {
+#if DEBUG
             this.Database.Log += (s) => { System.Diagnostics.Debug.WriteLine(s.ToString()); };
+#endif
         }
         #endregion
 

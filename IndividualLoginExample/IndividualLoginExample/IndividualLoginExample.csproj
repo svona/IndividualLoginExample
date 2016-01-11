@@ -172,6 +172,9 @@
     <Compile Include="App_Start\IdentityConfig\AppUserManager.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Crypto\MyCustomPasswordHasher.cs" />
+    <Compile Include="Crypto\PasswordHash.cs" />
+    <Compile Include="Crypto\Pbkdf2.cs" />
     <Compile Include="DataAnnotations\PasswordStringLength.cs" />
     <Compile Include="Helpers\MyEmailService.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -180,9 +183,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="App_Data\MyDBContext.cs" />
-    <Compile Include="Migrations\201601101938306_Init.cs" />
-    <Compile Include="Migrations\201601101938306_Init.Designer.cs">
-      <DependentUpon>201601101938306_Init.cs</DependentUpon>
+    <Compile Include="Migrations\201601110017120_Init.cs" />
+    <Compile Include="Migrations\201601110017120_Init.Designer.cs">
+      <DependentUpon>201601110017120_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
@@ -262,8 +265,8 @@
     <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201601101938306_Init.resx">
-      <DependentUpon>201601101938306_Init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201601110017120_Init.resx">
+      <DependentUpon>201601110017120_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

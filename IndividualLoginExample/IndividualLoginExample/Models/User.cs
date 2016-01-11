@@ -64,6 +64,9 @@ namespace IndividualLoginExample.Models
         public string Email { get; set; }
 
         public bool EmailConfirmed { get; set; }
+
+        [Required]
+        public string SecurityStamp { get; set; }
         #endregion
 
         #region Navigation Properties
