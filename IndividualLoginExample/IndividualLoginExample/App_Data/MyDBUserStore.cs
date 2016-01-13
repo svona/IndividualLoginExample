@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using IndividualLoginExample.Models;
+using IndividualLoginExample.Properties;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -280,6 +281,14 @@ namespace IndividualLoginExample
         {
             if (this.disposed)
                 throw new ObjectDisposedException(nameof(db));
+        }
+        #endregion
+
+        #region Internal Methods
+        public IEnumerable<UserPasswordHistory> GetPasswords(int userId)
+        {
+            return this.db.GetUserPasswordHistory(userId: userId)
+                .ToList();
         }
         #endregion
     }
