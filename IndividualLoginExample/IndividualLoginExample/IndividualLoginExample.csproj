@@ -172,6 +172,7 @@
     <Compile Include="App_Start\IdentityConfig\AppUserManager.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Crypto\MyCustomPasswordHasher.cs" />
     <Compile Include="Crypto\PasswordHash.cs" />
     <Compile Include="Crypto\Pbkdf2.cs" />
@@ -190,6 +191,8 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ForgotPasswordViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
+    <Compile Include="Models\ManageIndexViewModel.cs" />
+    <Compile Include="Models\ManageMessageId.cs" />
     <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="Models\ResetPasswordViewModel.cs" />
     <Compile Include="Models\User.cs" />
@@ -261,6 +264,7 @@
     <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\Manage\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

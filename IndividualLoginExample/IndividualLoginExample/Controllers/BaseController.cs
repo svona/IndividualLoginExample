@@ -61,6 +61,16 @@ namespace IndividualLoginExample.Controllers
         }
         #endregion
 
+        #region Protected Properties
+        protected IAuthenticationManager AuthenticationManager
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().Authentication;
+            }
+        }
+        #endregion
+
         #region Method Overrrides
         protected override void Dispose(bool disposing)
         {
