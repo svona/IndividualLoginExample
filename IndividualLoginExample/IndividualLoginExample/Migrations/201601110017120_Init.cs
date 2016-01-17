@@ -110,7 +110,12 @@ WHERE [Id] = @Id
 insert into UserPasswordHistory(userId, createdby, creationDateUTC, passwordHash)
 select Id, '', CreationDateUTC, PasswordHash
 from Users
-WHERE Id = @Id"
+WHERE Id = @Id
+
+select Id
+from Users
+where Id = @Id
+"
             );
 
             CreateStoredProcedure(
@@ -155,7 +160,7 @@ and (Email = @Email or @Email is null)
    @"
 SET NOCOUNT ON;
 
-SELECT Id,UserId,CreatedBy,CreationDateUTC
+SELECT Id,UserId,PasswordHash,CreatedBy,CreationDateUTC
 FROM UserPasswordHistory
 where (Id = @Id or @Id is null)
 and (UserId = @UserId or @UserId is null)

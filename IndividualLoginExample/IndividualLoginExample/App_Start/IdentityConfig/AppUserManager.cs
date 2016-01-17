@@ -81,10 +81,14 @@ namespace IndividualLoginExample.App_Start.IdentityConfig
 
         private Task<IdentityResult> CheckOldPasswords(int userId, string newPassword)
         {
-            var usedPasswordList = ((MyDBUserStore)this.Store).GetPasswords(userId).Take(Settings.Default.DontAllowLastNumberOfPasswords);
+            var usedPasswordList = ((MyDBUserStore)this.Store).GetPasswords(userId)
+                .ToList()
+                .Take(Settings.Default.DontAllowLastNumberOfPasswords)
+                .Select(b => b.PasswordHash)
+                .Distinct();
 
             if (usedPasswordList
-                .Any(b => this.PasswordHasher.VerifyHashedPassword(b.PasswordHash, newPassword) == PasswordVerificationResult.Success))
+                .Any(b => this.PasswordHasher.VerifyHashedPassword(b, newPassword) == PasswordVerificationResult.Success))
             {
                 // password was previously used and cannot be used again.
                 return Task.FromResult(IdentityResult.Failed(String.Format("You cannot use any of your last {0} passwords.", Settings.Default.DontAllowLastNumberOfPasswords)));

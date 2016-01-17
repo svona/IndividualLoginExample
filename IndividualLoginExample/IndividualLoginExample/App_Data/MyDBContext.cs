@@ -36,7 +36,9 @@ namespace IndividualLoginExample
 
         public T Attach<T>(T entity) where T : class
         {
-            return Set<T>().Attach(entity);
+            Set<T>().Attach(entity);
+            Entry<T>(entity).State = EntityState.Modified;
+            return entity;
         }
 
         public T Detach<T>(T entity) where T : class

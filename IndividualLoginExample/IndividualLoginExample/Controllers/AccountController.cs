@@ -33,7 +33,7 @@ namespace IndividualLoginExample.Controllers
             }
 
             var status = await this.SignInManager.PasswordSignInAsync(
-                model.UserName, 
+                model.Email, 
                 model.Password, 
                 model.RememberMe, 
                 Settings.Default.AccountLockoutDurationInMinutes > 0);

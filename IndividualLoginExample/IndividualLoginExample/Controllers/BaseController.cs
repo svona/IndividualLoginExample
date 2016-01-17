@@ -74,10 +74,25 @@ namespace IndividualLoginExample.Controllers
         #region Method Overrrides
         protected override void Dispose(bool disposing)
         {
-            if (this.db != null)
+            if (disposing)
             {
-                this.db.Dispose();
-                this.db = null;
+                if (signInManager != null)
+                {
+                    signInManager.Dispose();
+                    signInManager = null;
+                }
+
+                if (userManager != null)
+                {
+                    userManager.Dispose();
+                    userManager = null;
+                }
+
+                if (this.db != null)
+                {
+                    this.db.Dispose();
+                    this.db = null;
+                }
             }
 
             base.Dispose(disposing);

@@ -53,7 +53,9 @@ namespace IndividualLoginExample
         public Task<User> FindByNameAsync(string userName)
         {
             this.ThrowIfDisposed();
-            var res = db.GetUsers(userName: userName).SingleOrDefault();
+            // dont sign in with username. instead sign in with email.
+            // people are more likely to remember their email instead of their username
+            var res = db.GetUsers(email: userName).SingleOrDefault();
             return Task.FromResult<User>(res);
         }
         #endregion
