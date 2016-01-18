@@ -10,34 +10,43 @@ namespace IndividualLoginExample.Migrations
             CreateTable(
                 "dbo.Users",
                 c => new
-                {
-                    Id = c.Int(nullable: false, identity: true),
-                    UserName = c.String(nullable: false, maxLength: 100),
-                    PasswordHash = c.String(nullable: false, maxLength: 68),
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        UserName = c.String(nullable: false, maxLength: 100),
+                        PasswordHash = c.String(nullable: false, maxLength: 68),
                     CreationDateUTC = c.DateTime(nullable: false, defaultValueSql: "GETUTCDATE()"),
                     LockoutEndDateUtc = c.DateTime(),
-                    AccessFailedCount = c.Int(nullable: false),
-                    LockoutEnabled = c.Boolean(nullable: false),
-                    TwoFactorEnabled = c.Boolean(nullable: false),
-                    Email = c.String(nullable: false, maxLength: 100),
-                    EmailConfirmed = c.Boolean(nullable: false),
-                    SecurityStamp = c.String(nullable: false),
-                })
+                        AccessFailedCount = c.Int(nullable: false),
+                        LockoutEnabled = c.Boolean(nullable: false),
+                        TwoFactorEnabled = c.Boolean(nullable: false),
+                        Email = c.String(nullable: false, maxLength: 100),
+                        EmailConfirmed = c.Boolean(nullable: false),
+                        SecurityStamp = c.String(nullable: false),
+                    })
                 .PrimaryKey(t => t.Id, name: "PK_Users");
 
             CreateTable(
                 "dbo.UserPasswordHistory",
                 c => new
-                {
-                    Id = c.Int(nullable: false, identity: true),
-                    UserId = c.Int(nullable: false),
-                    PasswordHash = c.String(nullable: false, maxLength: 68),
-                    CreatedBy = c.String(nullable: false, maxLength: 100),
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        UserId = c.Int(nullable: false),
+                        PasswordHash = c.String(nullable: false, maxLength: 68),
+                        CreatedBy = c.String(nullable: false, maxLength: 100),
                     CreationDateUTC = c.DateTime(nullable: false, defaultValueSql: "GETUTCDATE()"),
                 })
                 .PrimaryKey(t => t.Id, "PK_UserPasswordHistory")
                 .ForeignKey("dbo.Users", t => t.UserId, false, "FK_Users_UserPasswordHistory")
                 .Index(t => t.UserId, name: "IX_UserPasswordHistory_UserId");
+
+            CreateTable(
+                "dbo.Roles",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(nullable: false, maxLength: 100),
+                    })
+                .PrimaryKey(t => t.Id, name: "PK_Roles");
 
             CreateStoredProcedure(
                 "dbo.UserInsert",
@@ -75,7 +84,7 @@ from @tempUsers
 
 select CAST(SCOPE_IDENTITY() AS INT) as Id"
             );
-
+            
             CreateStoredProcedure(
                 "dbo.UserUpdate",
                 p => new
@@ -117,19 +126,67 @@ from Users
 where Id = @Id
 "
             );
-
+            
             CreateStoredProcedure(
                 "dbo.UserDelete",
                 p => new
-                {
-                    Id = p.Int(),
-                },
+                    {
+                        Id = p.Int(),
+                    },
                 body:
                     @"
 SET NOCOUNT ON;
 
 DELETE dbo.Users
 WHERE [Id] = @Id"
+            );
+
+            CreateStoredProcedure(
+                "dbo.RoleInsert",
+                p => new
+                    {
+                        Name = p.String(maxLength: 100),
+                    },
+                body:
+                    @"
+SET NOCOUNT ON;
+INSERT [dbo].[Roles]([Name])
+output inserted.Id
+VALUES (@Name)"
+            );
+
+            CreateStoredProcedure(
+                "dbo.RoleUpdate",
+                p => new
+                    {
+                        Id = p.Int(),
+                        Name = p.String(maxLength: 100),
+                    },
+                body:
+                    @"
+SET NOCOUNT ON;
+
+UPDATE [dbo].[Roles]
+SET [Name] = @Name
+WHERE [Id] = @Id
+
+select Id
+from Roles
+where Id = @Id"
+            );
+
+            CreateStoredProcedure(
+                "dbo.RoleDelete",
+                p => new
+                    {
+                        Id = p.Int(),
+                    },
+                body:
+                    @"
+SET NOCOUNT ON;
+
+DELETE [dbo].[Roles]
+WHERE ([Id] = @Id)"
             );
 
             CreateStoredProcedure(
@@ -165,17 +222,41 @@ FROM UserPasswordHistory
 where (Id = @Id or @Id is null)
 and (UserId = @UserId or @UserId is null)
 ");
-        }
 
+            CreateStoredProcedure(
+                "GetRoles",
+                c => new
+                {
+                    Id = c.Int(defaultValueSql: "NULL"),
+                    RoleNAme = c.String(maxLength: 100, unicode: true, defaultValueSql: "NULL")
+                },
+                @"
+SET NOCOUNT ON;
+
+select Id, Name
+from Roles
+where (Id = @Id or @Id is null)
+and (Name = @RoleName or @RoleName is null)
+");
+        }
+        
         public override void Down()
         {
+            DropStoredProcedure("dbo.GetRoles");
             DropStoredProcedure("dbo.GetUserPasswordHistory");
             DropStoredProcedure("dbo.GetUsers");
+
+            DropStoredProcedure("dbo.RoleDelete");
+            DropStoredProcedure("dbo.RoleUpdate");
+            DropStoredProcedure("dbo.RoleInsert");
+
             DropStoredProcedure("dbo.UserDelete");
             DropStoredProcedure("dbo.UserUpdate");
             DropStoredProcedure("dbo.UserInsert");
+
             DropForeignKey("dbo.UserPasswordHistory", "UserId", "dbo.Users");
             DropIndex("dbo.UserPasswordHistory", new[] { "UserId" });
+            DropTable("dbo.Roles");
             DropTable("dbo.UserPasswordHistory");
             DropTable("dbo.Users");
         }

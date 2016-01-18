@@ -166,8 +166,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Data\MyDBRoleStore.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\IdentityConfig\AppRoleManager.cs" />
     <Compile Include="App_Start\IdentityConfig\AppSignInManager.cs" />
     <Compile Include="App_Start\IdentityConfig\AppUserManager.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -184,9 +186,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="App_Data\MyDBContext.cs" />
-    <Compile Include="Migrations\201601110017120_Init.cs" />
-    <Compile Include="Migrations\201601110017120_Init.Designer.cs">
-      <DependentUpon>201601110017120_Init.cs</DependentUpon>
+    <Compile Include="Migrations\201601180037549_Init.cs" />
+    <Compile Include="Migrations\201601180037549_Init.Designer.cs">
+      <DependentUpon>201601180037549_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ChangePasswordViewModel.cs" />
@@ -196,6 +198,7 @@
     <Compile Include="Models\ManageMessageId.cs" />
     <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="Models\ResetPasswordViewModel.cs" />
+    <Compile Include="Models\Role.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="App_Data\MyDBUserStore.cs" />
     <Compile Include="Models\UserPasswordHistory.cs" />
@@ -277,8 +280,8 @@
     <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201601110017120_Init.resx">
-      <DependentUpon>201601110017120_Init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201601180037549_Init.resx">
+      <DependentUpon>201601180037549_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

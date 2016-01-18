@@ -20,7 +20,7 @@ namespace IndividualLoginExample
     {
         #region Private Members
         private MyDBContext db;
-        private bool disposed = false;
+        protected bool disposed = false;
         #endregion
 
         #region Constructors

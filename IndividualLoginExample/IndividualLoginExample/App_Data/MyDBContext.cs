@@ -72,6 +72,11 @@ namespace IndividualLoginExample
                 b.Delete(c => c.HasName("UserDelete"));
             }).HasMany(b => b.UserPasswordHistoryList).WithRequired(b => b.User).WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Role>().MapToStoredProcedures(b =>
+            b.Insert(c => c.HasName("RoleInsert"))
+            .Update(c => c.HasName("RoleUpdate"))
+            .Delete(c => c.HasName("RoleDelete")));
+
             base.OnModelCreating(modelBuilder);
         }
         #endregion
@@ -93,6 +98,14 @@ namespace IndividualLoginExample
                 "GetUserPasswordHistory",
                 GetObjParameter("Id", typeof(int), id),
                 GetObjParameter("Userid", typeof(int), userId));
+        }
+
+        public ObjectResult<Role> GetRoles(int? id = null, string roleName = null)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Role>(
+                "GetRoles",
+                GetObjParameter("Id", typeof(int), id),
+                GetObjParameter("RoleName", typeof(string), roleName));
         }
         #endregion
 
