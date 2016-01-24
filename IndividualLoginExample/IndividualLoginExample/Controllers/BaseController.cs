@@ -17,7 +17,10 @@ namespace IndividualLoginExample.Controllers
         private AppSignInManager signInManager;
         private AppUserManager userManager;
         private AppRoleManager roleManager;
-        private MyDBContext db;
+        #endregion
+
+        #region Protected Variables
+        protected MyDBContext db;
         #endregion
 
         #region Constructors

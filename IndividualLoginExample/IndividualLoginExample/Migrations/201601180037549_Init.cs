@@ -78,11 +78,15 @@ output inserted.id, inserted.CreationDateUTC, inserted.PasswordHash
 into @tempUsers
 VALUES (@UserName, @PasswordHash, @CreationDateUTC, @LockoutEndDateUtc, @AccessFailedCount, @LockoutEnabled, @TwoFactorEnabled, @Email, @EmailConfirmed, @SecurityStamp)
 
+declare @userId int
+
+select @userId = CAST(SCOPE_IDENTITY() AS INT)
+
 insert into UserPasswordHistory(userId, createdby, creationDateUTC, passwordHash)
 select UserId, '', CreationDateUTC, PasswordHash
 from @tempUsers
 
-select CAST(SCOPE_IDENTITY() AS INT) as Id"
+select @userId as Id"
             );
             
             CreateStoredProcedure(

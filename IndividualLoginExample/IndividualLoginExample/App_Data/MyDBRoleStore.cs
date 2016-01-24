@@ -6,7 +6,8 @@ using System.Linq;
 
 namespace IndividualLoginExample
 {
-    public class MyDBRoleStore : IRoleStore<Role, int>
+    public class MyDBRoleStore : IRoleStore<Role, int>, 
+        IQueryableRoleStore<Role, int>
     {
         #region Private Members
         private MyDBContext db;
@@ -75,6 +76,16 @@ namespace IndividualLoginExample
         }
         #endregion
 
+        #endregion
+
+        #region IQueryableRoleStore Implementation
+        public IQueryable<Role> Roles
+        {
+            get
+            {
+                return this.db.GetRoles().ToList().AsQueryable();
+            }
+        }
         #endregion
 
         #region Private Methods
