@@ -1,17 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace IndividualLoginExample.Models
 {
     [Table("Roles")]
     public class Role : IRole<int>
     {
+        #region Constructors
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Role"/> class.
+        /// </summary>
+        public Role()
+        {
+            this.UserRoles = new List<UserRole>();
+        }
+        #endregion
+
         #region IRole Implementation
         [Key]
         public int Id { get; protected set; }
@@ -19,6 +25,11 @@ namespace IndividualLoginExample.Models
         [Required]
         [StringLength(100)]
         public string Name { get; set; }
+        #endregion
+
+        #region Navigation Properties
+        [ForeignKey("RoleId")]
+        public virtual ICollection<UserRole> UserRoles { get; set; }
         #endregion
     }
 }

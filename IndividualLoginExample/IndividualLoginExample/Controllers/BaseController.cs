@@ -16,6 +16,7 @@ namespace IndividualLoginExample.Controllers
         #region Private Variables
         private AppSignInManager signInManager;
         private AppUserManager userManager;
+        private AppRoleManager roleManager;
         private MyDBContext db;
         #endregion
 
@@ -25,11 +26,12 @@ namespace IndividualLoginExample.Controllers
             this.db = new MyDBContext();
         }
 
-        public BaseController(AppSignInManager signInManager, AppUserManager userManager)
+        public BaseController(AppSignInManager signInManager, AppUserManager userManager, AppRoleManager roleManager)
             : base()
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
+            this.roleManager = roleManager;
         }
         #endregion
 
@@ -57,6 +59,19 @@ namespace IndividualLoginExample.Controllers
             private set
             {
                 this.userManager = value;
+            }
+        }
+
+        public AppRoleManager RoleManager
+        {
+            get
+            {
+                return this.roleManager ?? HttpContext.GetOwinContext().Get<AppRoleManager>();
+            }
+
+            private set
+            {
+                this.roleManager = value;
             }
         }
         #endregion

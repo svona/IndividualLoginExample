@@ -190,6 +190,10 @@
     <Compile Include="Migrations\201601180037549_Init.Designer.cs">
       <DependentUpon>201601180037549_Init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601232326542_AddedUserRoles.cs" />
+    <Compile Include="Migrations\201601232326542_AddedUserRoles.Designer.cs">
+      <DependentUpon>201601232326542_AddedUserRoles.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ChangePasswordViewModel.cs" />
     <Compile Include="Models\ForgotPasswordViewModel.cs" />
@@ -202,6 +206,7 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="App_Data\MyDBUserStore.cs" />
     <Compile Include="Models\UserPasswordHistory.cs" />
+    <Compile Include="Models\UserRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -282,6 +287,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201601180037549_Init.resx">
       <DependentUpon>201601180037549_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601232326542_AddedUserRoles.resx">
+      <DependentUpon>201601232326542_AddedUserRoles.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

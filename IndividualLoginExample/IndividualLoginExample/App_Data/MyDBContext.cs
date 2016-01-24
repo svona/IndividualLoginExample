@@ -77,6 +77,11 @@ namespace IndividualLoginExample
             .Update(c => c.HasName("RoleUpdate"))
             .Delete(c => c.HasName("RoleDelete")));
 
+            modelBuilder.Entity<UserRole>().MapToStoredProcedures(b => 
+                b.Insert(c => c.HasName("UserRoleInsert"))
+                .Update(c => c.HasName("UserRoleUpdate"))
+                .Delete(c => c.HasName("UserRoleDelete")));
+            
             base.OnModelCreating(modelBuilder);
         }
         #endregion

@@ -23,6 +23,7 @@ namespace IndividualLoginExample.Models
         {
             this.CreationDateUTC = DateTime.UtcNow;
             this.UserPasswordHistoryList = new List<UserPasswordHistory>();
+            this.UserRoles = new List<UserRole>();
         }
         #endregion
 
@@ -72,6 +73,9 @@ namespace IndividualLoginExample.Models
         #region Navigation Properties
         [ForeignKey("UserId")]
         public virtual ICollection<UserPasswordHistory> UserPasswordHistoryList { get; set; }
+
+        [ForeignKey("UserId")]
+        public virtual ICollection<UserRole> UserRoles { get; set; }
         #endregion
 
         #region Public Methods
