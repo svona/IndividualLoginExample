@@ -51,6 +51,7 @@ namespace IndividualLoginExample.App_Start.IdentityConfig
                 Microsoft.Owin.Security.DataProtection.IDataProtector p = dataProtectionProvider.Create("ASP.NET Identity");
                 manager.UserTokenProvider = new DataProtectorTokenProvider<User, int>(p);
             }
+
             return manager;
         }
         #endregion

@@ -36,16 +36,18 @@ namespace IndividualLoginExample.Controllers
             string message = String.Empty;
             try
             {
-                var myAdmin = await UserManager.FindByIdAsync(2);
+                var myAdmin = await UserManager.FindByIdAsync(1);
+                //var myRole = await this.RoleManager.FindByIdAsync(1);
+                //var result = await this.UserManager.AddToRoleAsync(myAdmin.Id, myRole.Name);
 
-                var sb = new StringBuilder();
+                //var sb = new StringBuilder();
 
-                foreach (var item in myAdmin.UserRoles)
-                {
-                    sb.AppendLine(item.Role.Name);
-                }
+                //foreach (var item in myAdmin.UserRoles)
+                //{
+                //    sb.AppendLine(item.Role.Name);
+                //}
 
-                message = sb.ToString();
+                //message = sb.ToString();
             }
             catch (Exception ex)
             {

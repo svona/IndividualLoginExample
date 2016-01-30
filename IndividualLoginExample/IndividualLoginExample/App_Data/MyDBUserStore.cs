@@ -16,7 +16,8 @@ namespace IndividualLoginExample
         IUserLockoutStore<User, int>,
         IUserTwoFactorStore<User, int>,
         IUserEmailStore<User, int>,
-        IUserSecurityStampStore<User, int>
+        IUserSecurityStampStore<User, int>,
+        IUserRoleStore<User, int>
     {
         #region Private Members
         private MyDBContext db;
@@ -275,6 +276,76 @@ namespace IndividualLoginExample
                 throw new ArgumentNullException(nameof(user));
 
             return Task<string>.FromResult(user.SecurityStamp);
+        }
+        #endregion
+
+        #region IUserRoleStore Implementation
+        public Task AddToRoleAsync(User user, string roleName)
+        {
+            this.ThrowIfDisposed();
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+            if (String.IsNullOrWhiteSpace(roleName))
+                throw new ArgumentException("Value cannot be null", roleName);
+
+            var myRole = this.db.GetRoles(roleName: roleName).SingleOrDefault();
+
+            if (myRole != null)
+            {
+                var userRoleToAdd = user.UserRoles.SingleOrDefault(b => b.RoleId == myRole.Id);
+                if (userRoleToAdd == null)
+                    db.Add(new UserRole { RoleId = myRole.Id, UserId = user.Id });
+                db.SaveChanges();
+            }
+
+            return Task.FromResult(0);
+        }
+
+        public Task RemoveFromRoleAsync(User user, string roleName)
+        {
+            this.ThrowIfDisposed();
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+            if (String.IsNullOrWhiteSpace(roleName))
+                throw new ArgumentException("Value cannot be null", roleName);
+
+            var myRole = this.db.GetRoles(roleName: roleName).SingleOrDefault();
+
+            if (myRole != null)
+            {
+                var userRoleToRemove = user.UserRoles.SingleOrDefault(b => b.RoleId == myRole.Id);
+                db.Remove(userRoleToRemove);
+                db.SaveChanges();
+            }
+
+            return Task.FromResult(0);
+        }
+
+        public Task<IList<string>> GetRolesAsync(User user)
+        {
+            this.ThrowIfDisposed();
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+
+            return Task.FromResult<IList<string>>(user.UserRoles.Select(b => b.Role.Name).ToList());
+        }
+
+        public Task<bool> IsInRoleAsync(User user, string roleName)
+        {
+            this.ThrowIfDisposed();
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+            if (String.IsNullOrWhiteSpace(roleName))
+                throw new ArgumentException("Value cannot be null", roleName);
+
+            var myRole = this.db.GetRoles(roleName: roleName).SingleOrDefault();
+
+            if (myRole != null)
+            {
+                return Task.FromResult <bool>(user.UserRoles.Any(b => b.RoleId == myRole.Id));
+            }
+
+            return Task.FromResult<bool>(false);
         }
         #endregion
 
