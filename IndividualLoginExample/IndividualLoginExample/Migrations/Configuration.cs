@@ -26,6 +26,12 @@ namespace IndividualLoginExample.Migrations
             //  new Person { FullName = "Rowan Miller" }
             //);
             //
+
+            context.Add(new BizObject { Name = "User" });
+            context.Add(new BizObject { Name = "Role" });
+            context.Add(new BizObject { Name = "UserRole" });
+            context.Add(new BizObject { Name = "BizObject" });
+            context.SaveChanges();
         }
     }
 }

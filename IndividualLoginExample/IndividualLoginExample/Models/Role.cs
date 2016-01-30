@@ -20,7 +20,7 @@ namespace IndividualLoginExample.Models
 
         #region IRole Implementation
         [Key]
-        public int Id { get; protected set; }
+        public int Id { get; set; }
 
         [Required]
         [StringLength(100)]

@@ -11,7 +11,7 @@ namespace IndividualLoginExample.Models
     public class BizObject
     {
         [Key]
-        public int Id { get; protected set; }
+        public int Id { get; set; }
 
         [Required]
         [StringLength(255)]

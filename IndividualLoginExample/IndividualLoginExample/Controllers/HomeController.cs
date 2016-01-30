@@ -30,13 +30,15 @@ namespace IndividualLoginExample.Controllers
             return View();
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "Administrators")]
         public async Task<ActionResult> Test()
         {
             string message = String.Empty;
             try
             {
                 var myAdmin = await UserManager.FindByIdAsync(1);
+
+                message = myAdmin.Email;
                 //var myRole = await this.RoleManager.FindByIdAsync(1);
                 //var result = await this.UserManager.AddToRoleAsync(myAdmin.Id, myRole.Name);
 

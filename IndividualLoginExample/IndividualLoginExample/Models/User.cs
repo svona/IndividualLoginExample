@@ -34,7 +34,7 @@ namespace IndividualLoginExample.Models
         public int Id
         {
             get;
-            protected set;
+            set;
         }
 
         [Required]

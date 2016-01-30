@@ -175,6 +175,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Crypto\MyCustomPasswordHasher.cs" />
     <Compile Include="Crypto\PasswordHash.cs" />
     <Compile Include="Crypto\Pbkdf2.cs" />
@@ -281,6 +282,10 @@
     <Content Include="Views\Manage\Index.cshtml" />
     <Content Include="Views\Manage\ChangePassword.cshtml" />
     <Content Include="Views\Home\Test.cshtml" />
+    <Content Include="Views\Role\Create.cshtml" />
+    <Content Include="Views\Role\Edit.cshtml" />
+    <Content Include="Views\Role\Index.cshtml" />
+    <Content Include="Views\Role\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
