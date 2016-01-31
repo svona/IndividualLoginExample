@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using IndividualLoginExample.Models;
+using Microsoft.AspNet.Identity;
 
 namespace IndividualLoginExample.Controllers
 {
@@ -27,14 +28,14 @@ namespace IndividualLoginExample.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(Role model)
+        public ActionResult Create(Role model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            var result = await this.RoleManager.CreateAsync(model);
+            var result = this.RoleManager.Create(model);
 
             if (!result.Succeeded)
             {
@@ -46,24 +47,32 @@ namespace IndividualLoginExample.Controllers
         }
         #endregion
 
-        #region Edit
-        public async Task<ActionResult> Edit(int roleId)
+        #region Details
+        public ActionResult Details(int roleId)
         {
-            var model = await this.RoleManager.FindByIdAsync(roleId);
+            var model = this.RoleManager.FindById(roleId);
+            return View(model);
+        }
+        #endregion
+
+        #region Edit
+        public ActionResult Edit(int roleId)
+        {
+            var model = this.RoleManager.FindById(roleId);
 
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(Role model)
+        public ActionResult Edit(Role model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            var result = await this.RoleManager.UpdateAsync(model);
+            var result = this.RoleManager.Update(model);
 
             if (!result.Succeeded)
             {
@@ -76,23 +85,23 @@ namespace IndividualLoginExample.Controllers
         #endregion
 
         #region Delete
-        public async Task<ActionResult> Delete(int roleId)
+        public ActionResult Delete(int roleId)
         {
-            var model = await this.RoleManager.FindByIdAsync(roleId);
+            var model = this.RoleManager.FindById(roleId);
 
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(Role model)
+        public ActionResult Delete(Role model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            var result = await RoleManager.DeleteAsync(model);
+            var result = RoleManager.Delete(model);
 
             if (!result.Succeeded)
             {
@@ -103,6 +112,5 @@ namespace IndividualLoginExample.Controllers
             return RedirectToAction("Index");
         }
         #endregion
-
     }
 }
