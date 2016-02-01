@@ -10,6 +10,7 @@ namespace IndividualLoginExample
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/jquery-ui-{version}.js",
                         "~/Scripts/DataTables/dataTables.bootstrap.js",
                         "~/Scripts/DataTables/jquery.dataTables.js"));
 
@@ -28,6 +29,7 @@ namespace IndividualLoginExample
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/DataTables/css/dataTables.bootstrap.css",
+                      "~/Content/DataTables/css/jquery.dataTables.css",
                       "~/Content/site.css"));
         }
     }

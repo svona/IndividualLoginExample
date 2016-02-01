@@ -6,30 +6,33 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-@*<table class="table">
-    <tr>
-        <th>
+<table class="table">
+    <thead>
+        <tr>
+            <td>
             @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>Actions</th>
-    </tr>
+            </td>
+            <td>Actions</td>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { roleId = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { roleId = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { roleId = item.Id })
+            </td>
+        </tr>
+    }
+    </tbody>
+    </table>
 
-@foreach (var item in Model)
-{
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { roleId = item.Id }) |
-            @Html.ActionLink("Details", "Details", new { roleId = item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { roleId = item.Id })
-        </td>
-    </tr>
-}
-</table>*@
-
-<table id="roleDetailsTable" class="display">
+@*<table id="roleDetailsTable" class="display">
     <thead>
         <tr>
             <th>Column 1</th>
@@ -46,12 +49,12 @@
             <td>Row 2 Data 2</td>
         </tr>
     </tbody>
-</table>
+</table>*@
 
 @section scripts {
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#roleDetailsTable').DataTable();
+            $('.table').DataTable();
         });
     </script>
 }

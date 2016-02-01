@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using CodeFirstStoreFunctions;
 using IndividualLoginExample.Models;
@@ -64,6 +65,9 @@ namespace IndividualLoginExample
         {
             modelBuilder.Conventions.Add(new FunctionsConvention<MyDBContext>("dbo"));
 
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+            modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
+
             var userConfig = modelBuilder.Entity<User>();
             userConfig.MapToStoredProcedures(b =>
             {
@@ -86,7 +90,7 @@ namespace IndividualLoginExample
                 b.Insert(c => c.HasName("BizObjectInsert"))
                 .Update(c => c.HasName("BizObjectUpdate"))
                 .Delete(c => c.HasName("BizObjectDelete")));
-            
+
             base.OnModelCreating(modelBuilder);
         }
         #endregion

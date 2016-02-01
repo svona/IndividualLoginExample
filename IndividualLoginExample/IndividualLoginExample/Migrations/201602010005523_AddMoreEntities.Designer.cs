@@ -7,13 +7,13 @@ namespace IndividualLoginExample.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class AddedUserRoles : IMigrationMetadata
+    public sealed partial class AddMoreEntities : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedUserRoles));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddMoreEntities));
         
         string IMigrationMetadata.Id
         {
-            get { return "201601232326542_AddedUserRoles"; }
+            get { return "201602010005523_AddMoreEntities"; }
         }
         
         string IMigrationMetadata.Source
