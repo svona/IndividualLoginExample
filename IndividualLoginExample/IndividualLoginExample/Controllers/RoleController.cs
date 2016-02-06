@@ -16,7 +16,13 @@ namespace IndividualLoginExample.Controllers
         // GET: Role
         public ActionResult Index()
         {
-            return View(this.RoleManager.Roles.ToList());
+            var model = Enumerable.Range(0, 100)
+                .Select(b => new Role { Name = Guid.NewGuid().ToString().Replace("-", String.Empty) })
+                .ToList();
+
+            return View(model);
+
+            // return View(this.RoleManager.Roles.ToList());
         }
         #endregion
 

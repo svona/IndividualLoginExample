@@ -15,6 +15,14 @@
             <td>Actions</td>
         </tr>
     </thead>
+    <tfoot>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.Name)
+            </td>
+            <td>Actions</td>
+        </tr>
+    </tfoot>
     <tbody>
     @foreach (var item in Model)
     {
@@ -53,8 +61,22 @@
 
 @section scripts {
     <script type="text/javascript">
+        
         $(document).ready(function () {
-            $('.table').DataTable();
+            loadTable();
         });
+
+        function loadTable() {
+            if ($.fn.DataTable.isDataTable('.table')) {
+                $('.table').DataTable();
+            }
+            else {
+                $('.table').DataTable({
+                    "dom": '<"top"lftipr><"clear">', // (f)ilter, (l)ength, (t)able, (i)nfo summary, (p)agination, p(r)ocessing
+                    "pagingType": "full_numbers",
+                    // "searching": true
+                });
+            }
+        }
     </script>
 }
