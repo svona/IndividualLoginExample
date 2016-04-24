@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using DevTrends.MvcDonutCaching;
 using IndividualLoginExample.Models;
 using Microsoft.AspNet.Identity;
 
@@ -23,6 +24,35 @@ namespace IndividualLoginExample.Controllers
             return View(model);
 
             // return View(this.RoleManager.Roles.ToList());
+        }
+
+        [DonutOutputCache(Duration = 1)]
+        public JsonResult RoleDataTableHandler(NewCustomDatatablesParamModel param)
+        {
+            // http://www.datatables.net/forums/discussion/21518/migrate-to-datatables-1-10-fnserverdata
+
+            int totalRecords = 0;
+
+            var model = db.GetRoles(ref totalRecords, rowsToSkip: param.Start, rowsToTake: param.Length).ToList();
+
+            var count = 10;
+
+            var temp = model.FirstOrDefault();
+
+            if (temp != null)
+            {
+                count = totalRecords;
+            }
+
+            var result = new
+            {
+                draw = param.Draw,
+                recordsTotal = count,
+                recordsFiltered = count,
+                data = model
+            };
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
         #endregion
 

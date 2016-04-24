@@ -8,73 +8,52 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <td>
-            @Html.DisplayNameFor(model => model.Name)
-            </td>
-            <td>Actions</td>
-        </tr>
-    </thead>
-    <tfoot>
-        <tr>
-            <td>
-                @Html.DisplayNameFor(model => model.Name)
-            </td>
-            <td>Actions</td>
-        </tr>
-    </tfoot>
-    <tbody>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { roleId = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { roleId = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { roleId = item.Id })
-            </td>
-        </tr>
-    }
-    </tbody>
-    </table>
-
-@*<table id="roleDetailsTable" class="display">
-    <thead>
-        <tr>
-            <th>Column 1</th>
-            <th>Column 2</th>
-        </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 2 Data 1</td>
-            <td>Row 2 Data 2</td>
-        </tr>
     </tbody>
-</table>*@
+</table>
 
 @section scripts {
     <script type="text/javascript">
-        
+
         $(document).ready(function () {
+
             loadTable();
         });
 
         function loadTable() {
+            var tableOfResults = null;
             if ($.fn.DataTable.isDataTable('.table')) {
-                $('.table').DataTable();
+                tableOfResults = $('.table').DataTable();
             }
             else {
-                $('.table').DataTable({
+                tableOfResults = $('.table').DataTable({
                     "dom": '<"top"lftipr><"clear">', // (f)ilter, (l)ength, (t)able, (i)nfo summary, (p)agination, p(r)ocessing
                     "pagingType": "full_numbers",
-                    // "searching": true
+                    "paging": true, // enable paging and page numbers
+                    "ordering": false, // disable ordering on all columns
+                    "orderMulti": false,
+                    "order": [[1, "desc"]],
+                    "lengthChange": true,
+                    "lengthMenu": [5, 10, 20, 50, 100, 200], //Define the Options Available for changing how many rows would be visible at a time.
+                    "pageLength": 10,
+                    "processing": true,    //display the processing popup when the data is being retrieved
+                    //responsive: true,   consolidate columns when screen is very small
+                    "serverSide": true,  //get data for the columns from the server
+                    "ajax": {
+                        "url": "@Url.Action("RoleDataTableHandler")",//get the data from the TableHandler method
+                        "data": function (data) { // use these to send custom parameters instead of the fnServerParams when using sAjaxSource
+
+                        },
+                        "type": "POST" // set to post to avoid getting error that the request exceeds the maximum query string limit
+                    },
+                    //"rowCallback": function (row, data, index) {
+
+                    //},
+                    "columnDefs": [
+                        { "data": "Id", "title": "Id", "targets": 0 },
+                        { "data": "Name", "title": "Name", "targets": 1 }
+                    ]
                 });
             }
         }

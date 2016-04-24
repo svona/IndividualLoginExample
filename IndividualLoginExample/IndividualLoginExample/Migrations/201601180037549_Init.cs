@@ -232,15 +232,24 @@ and (UserId = @UserId or @UserId is null)
                 c => new
                 {
                     Id = c.Int(defaultValueSql: "NULL"),
-                    RoleNAme = c.String(maxLength: 100, unicode: true, defaultValueSql: "NULL")
+                    RoleName = c.String(maxLength: 100, unicode: true, defaultValueSql: "NULL"),
+                    RowsToSkip = c.Int(defaultValueSql: "10"),
+                    RowsToTake = c.Int(defaultValueSql: "10")
                 },
                 @"
 SET NOCOUNT ON;
 
-select Id, Name
-from Roles
-where (Id = @Id or @Id is null)
-and (Name = @RoleName or @RoleName is null)
+WITH CTE AS (
+    select Id, Name
+    from Roles
+    where (Id = @Id or @Id is null)
+    and (Name = @RoleName or @RoleName is null)
+), RecordsCount AS (SELECT Count(*) AS TotalRecords FROM CTE)
+
+SELECT *
+FROM CTE, RecordsCount
+ORDER BY Name
+OFFSET @RowsToSkip ROWS FETCH NEXT @RowsToTake ROWS ONLY
 ");
         }
         

@@ -26,7 +26,7 @@ namespace IndividualLoginExample.Models
         [StringLength(100)]
         public string Name { get; set; }
         #endregion
-
+        
         #region Navigation Properties
         [ForeignKey("RoleId")]
         public virtual ICollection<UserRole> UserRoles { get; set; }
