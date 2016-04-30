@@ -75,8 +75,9 @@ namespace IndividualLoginExample.Models
                 // BIND CUSTOM PARAMETERS TO THE PARAM MODEL
                 bool? isOpen = request["IsOpen"] == null ? null as bool? : Convert.ToBoolean(request["IsOpen"]);
 
-                string manufacturer = request["Manufacturer"];
-                
+                string name = request["Name"];
+                string nameContains = request["NameContains"];
+
                 bool? reviewed = String.IsNullOrWhiteSpace(request["Reviewed"]) || String.Equals(request["Reviewed"], "null", StringComparison.OrdinalIgnoreCase) ? null as bool? : Convert.ToBoolean(request["Reviewed"]);
 
                 model = new NewCustomDatatablesParamModel
@@ -86,7 +87,10 @@ namespace IndividualLoginExample.Models
                     Length = length,
                     Search = search,
                     Order = order,
-                    Columns = columns
+                    Columns = columns,
+
+                    Name = name,
+                    NameContains = nameContains
                 };
             }
             catch (Exception ex)

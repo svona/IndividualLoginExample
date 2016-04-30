@@ -9,5 +9,8 @@ namespace IndividualLoginExample.Models
     [ModelBinder(typeof(DataTablesParamsModelBinder))]
     public class NewCustomDatatablesParamModel : NewDatatablesParamModel
     {
+        public string Name { get; set; }
+
+        public string NameContains { get; set; }
     }
 }

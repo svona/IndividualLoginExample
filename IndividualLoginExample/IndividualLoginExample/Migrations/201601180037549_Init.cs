@@ -10,19 +10,19 @@ namespace IndividualLoginExample.Migrations
             CreateTable(
                 "dbo.Users",
                 c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        UserName = c.String(nullable: false, maxLength: 100),
-                        PasswordHash = c.String(nullable: false, maxLength: 68),
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    UserName = c.String(nullable: false, maxLength: 100),
+                    PasswordHash = c.String(nullable: false, maxLength: 68),
                     CreationDateUTC = c.DateTime(nullable: false, defaultValueSql: "GETUTCDATE()"),
                     LockoutEndDateUtc = c.DateTime(),
-                        AccessFailedCount = c.Int(nullable: false),
-                        LockoutEnabled = c.Boolean(nullable: false),
-                        TwoFactorEnabled = c.Boolean(nullable: false),
-                        Email = c.String(nullable: false, maxLength: 100),
-                        EmailConfirmed = c.Boolean(nullable: false),
-                        SecurityStamp = c.String(nullable: false),
-                    })
+                    AccessFailedCount = c.Int(nullable: false),
+                    LockoutEnabled = c.Boolean(nullable: false),
+                    TwoFactorEnabled = c.Boolean(nullable: false),
+                    Email = c.String(nullable: false, maxLength: 100),
+                    EmailConfirmed = c.Boolean(nullable: false),
+                    SecurityStamp = c.String(nullable: false),
+                })
                 .PrimaryKey(t => t.Id, name: "PK_Users");
 
             CreateTable(
@@ -33,7 +33,7 @@ namespace IndividualLoginExample.Migrations
                         UserId = c.Int(nullable: false),
                         PasswordHash = c.String(nullable: false, maxLength: 68),
                         CreatedBy = c.String(nullable: false, maxLength: 100),
-                    CreationDateUTC = c.DateTime(nullable: false, defaultValueSql: "GETUTCDATE()"),
+                        CreationDateUTC = c.DateTime(nullable: false, defaultValueSql: "GETUTCDATE()"),
                 })
                 .PrimaryKey(t => t.Id, "PK_UserPasswordHistory")
                 .ForeignKey("dbo.Users", t => t.UserId, false, "FK_Users_UserPasswordHistory")
@@ -42,10 +42,11 @@ namespace IndividualLoginExample.Migrations
             CreateTable(
                 "dbo.Roles",
                 c => new
-                    {
+                {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 100),
-                    })
+                        CreationDateUTC = c.DateTime(nullable: false, defaultValueSql: "GETUTCDATE()"),
+                })
                 .PrimaryKey(t => t.Id, name: "PK_Roles");
 
             CreateStoredProcedure(
@@ -150,22 +151,24 @@ WHERE [Id] = @Id"
                 p => new
                     {
                         Name = p.String(maxLength: 100),
-                    },
+                        CreationDateUTC = p.DateTime(),
+                },
                 body:
                     @"
 SET NOCOUNT ON;
-INSERT [dbo].[Roles]([Name])
+INSERT [dbo].[Roles]([Name], CreationDateUTC)
 output inserted.Id
-VALUES (@Name)"
+VALUES (@Name, @CreationDateUTC)"
             );
 
             CreateStoredProcedure(
                 "dbo.RoleUpdate",
                 p => new
-                    {
-                        Id = p.Int(),
-                        Name = p.String(maxLength: 100),
-                    },
+                {
+                    Id = p.Int(),
+                    Name = p.String(maxLength: 100),
+                    CreationDateUTC = p.DateTime(),
+                },
                 body:
                     @"
 SET NOCOUNT ON;
@@ -233,6 +236,7 @@ and (UserId = @UserId or @UserId is null)
                 {
                     Id = c.Int(defaultValueSql: "NULL"),
                     RoleName = c.String(maxLength: 100, unicode: true, defaultValueSql: "NULL"),
+                    NameContains = c.String(maxLength: 100, unicode: true, defaultValueSql: "NULL"),
                     RowsToSkip = c.Int(defaultValueSql: "10"),
                     RowsToTake = c.Int(defaultValueSql: "10")
                 },
@@ -240,10 +244,11 @@ and (UserId = @UserId or @UserId is null)
 SET NOCOUNT ON;
 
 WITH CTE AS (
-    select Id, Name
+    select Id, Name, CreationDateUTC
     from Roles
     where (Id = @Id or @Id is null)
     and (Name = @RoleName or @RoleName is null)
+    and (Name like '%' + @NameContains + '%' or @NameContains is null)
 ), RecordsCount AS (SELECT Count(*) AS TotalRecords FROM CTE)
 
 SELECT *

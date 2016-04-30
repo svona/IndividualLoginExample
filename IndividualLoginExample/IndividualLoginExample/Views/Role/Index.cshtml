@@ -6,6 +6,23 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+<div class="form-inline">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="form-group col-md-3 col-sm-3 col-xs-3">
+            <div class="input-group input-group-sm">
+                <span class="input-group-addon bold-font">Name Contains</span>
+                @Html.TextBox("NameContains", "", new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="form-group col-md-1 col-sm-1 col-xs-1">
+            <div class="input-group input-group-sm">
+                <input id="buttonSearch" type="button" class="btn btn-sm btn-default" value="Refresh" />
+            </div>
+        </div>
+    </div>
+</div>
 <table class="table">
     <thead>
     </thead>
@@ -15,6 +32,8 @@
 
 @section scripts {
     <script type="text/javascript">
+        
+        var tableOfResults = null;
 
         $(document).ready(function () {
 
@@ -22,13 +41,12 @@
         });
 
         function loadTable() {
-            var tableOfResults = null;
             if ($.fn.DataTable.isDataTable('.table')) {
                 tableOfResults = $('.table').DataTable();
             }
             else {
                 tableOfResults = $('.table').DataTable({
-                    "dom": '<"top"lftipr><"clear">', // (f)ilter, (l)ength, (t)able, (i)nfo summary, (p)agination, p(r)ocessing
+                    "dom": '<"top"ltipr><"clear">', // (f)ilter -> removed this, (l)ength, (t)able, (i)nfo summary, (p)agination, p(r)ocessing
                     "pagingType": "full_numbers",
                     "paging": true, // enable paging and page numbers
                     "ordering": false, // disable ordering on all columns
@@ -43,7 +61,7 @@
                     "ajax": {
                         "url": "@Url.Action("RoleDataTableHandler")",//get the data from the TableHandler method
                         "data": function (data) { // use these to send custom parameters instead of the fnServerParams when using sAjaxSource
-
+                            data.NameContains = $('#NameContains').val();
                         },
                         "type": "POST" // set to post to avoid getting error that the request exceeds the maximum query string limit
                     },
@@ -52,10 +70,32 @@
                     //},
                     "columnDefs": [
                         { "data": "Id", "title": "Id", "targets": 0 },
-                        { "data": "Name", "title": "Name", "targets": 1 }
+                        { "data": "Name", "title": "Name", "targets": 1 },
+                        { "data": "CreationDateUTC", "title": "CreationDateUTC", "targets": 2, "render": FormatDate }
                     ]
                 });
             }
         }
+
+        function FormatDate(data, type, row, meta) {
+            //format the returned date from "/Date(123456789876)/" format to regular Date String format (if it's not null)
+            if (data == null || data == undefined)
+                return ""
+            else
+                return new Date(parseInt(data.substr(6))).toLocaleString();
+        }
+
+        $('input[type="text"]').on("keydown keypress", function (event) {
+            var key = event.which || event.keyCode || 0;
+
+            if (key === 13) {
+                tableOfResults.ajax.reload();
+                event.preventDefault();
+            }
+        });
+
+        $('#buttonSearch').click(function () {
+            tableOfResults.ajax.reload();
+        });
     </script>
 }

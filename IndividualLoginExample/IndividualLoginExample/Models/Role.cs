@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNet.Identity;
@@ -18,6 +19,7 @@ namespace IndividualLoginExample.Models
         }
         #endregion
 
+        #region Public Properties
         #region IRole Implementation
         [Key]
         public int Id { get; set; }
@@ -26,7 +28,10 @@ namespace IndividualLoginExample.Models
         [StringLength(100)]
         public string Name { get; set; }
         #endregion
-        
+
+        public DateTime CreationDateUTC { get; set; }
+        #endregion
+
         #region Navigation Properties
         [ForeignKey("RoleId")]
         public virtual ICollection<UserRole> UserRoles { get; set; }

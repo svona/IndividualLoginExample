@@ -30,10 +30,9 @@ namespace IndividualLoginExample.Controllers
         public JsonResult RoleDataTableHandler(NewCustomDatatablesParamModel param)
         {
             // http://www.datatables.net/forums/discussion/21518/migrate-to-datatables-1-10-fnserverdata
-
             int totalRecords = 0;
 
-            var model = db.GetRoles(ref totalRecords, rowsToSkip: param.Start, rowsToTake: param.Length).ToList();
+            var model = db.GetRoles(ref totalRecords, roleName: param.Name, nameContains: param.NameContains, rowsToSkip: param.Start, rowsToTake: param.Length).ToList();
 
             var count = 10;
 
