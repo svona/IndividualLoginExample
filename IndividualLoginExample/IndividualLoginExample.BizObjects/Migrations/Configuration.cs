@@ -1,18 +1,16 @@
 namespace IndividualLoginExample.Migrations
 {
-    using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Linq;
-    using Models;
-    internal sealed class Configuration : DbMigrationsConfiguration<IndividualLoginExample.MyDBContext>
+    using BizObjects.Models;
+
+    internal sealed class Configuration : DbMigrationsConfiguration<IndividualLoginExample.BizObjects.MyDBContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(IndividualLoginExample.MyDBContext context)
+        protected override void Seed(IndividualLoginExample.BizObjects.MyDBContext context)
         {
             //  This method will be called after migrating to the latest version.
 

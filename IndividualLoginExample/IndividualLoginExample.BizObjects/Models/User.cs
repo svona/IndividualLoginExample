@@ -7,10 +7,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
-using IndividualLoginExample.App_Start.IdentityConfig;
 using Microsoft.AspNet.Identity;
 
-namespace IndividualLoginExample.Models
+namespace IndividualLoginExample.BizObjects.Models
 {
     [Table("Users")]
     public class User : IUser<int>
@@ -76,16 +75,6 @@ namespace IndividualLoginExample.Models
 
         [ForeignKey("UserId")]
         public virtual ICollection<UserRole> UserRoles { get; set; }
-        #endregion
-
-        #region Public Methods
-        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(AppUserManager manager)
-        {
-            // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
-            var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
-            // Add custom user claims here
-            return userIdentity;
-        }
         #endregion
     }
 }

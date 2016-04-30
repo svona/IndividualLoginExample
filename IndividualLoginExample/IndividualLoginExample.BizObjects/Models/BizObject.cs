@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace IndividualLoginExample.Models
+namespace IndividualLoginExample.BizObjects.Models
 {
     [Table("BizObjects")]
     public class BizObject

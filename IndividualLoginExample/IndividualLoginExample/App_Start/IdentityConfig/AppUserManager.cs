@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
+using IndividualLoginExample.BizObjects.Models;
 using IndividualLoginExample.Crypto;
 using IndividualLoginExample.Helpers;
-using IndividualLoginExample.Models;
 using IndividualLoginExample.Properties;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
+using IndividualLoginExample.BizObjects;
 
 namespace IndividualLoginExample.App_Start.IdentityConfig
 {
@@ -53,6 +53,16 @@ namespace IndividualLoginExample.App_Start.IdentityConfig
             }
 
             return manager;
+        }
+        #endregion
+
+        #region Public Methods
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(User user)
+        {
+            // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
+            var userIdentity = await this.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+            // Add custom user claims here
+            return userIdentity;
         }
         #endregion
 

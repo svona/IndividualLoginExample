@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
-using IndividualLoginExample.Models;
-using IndividualLoginExample.Properties;
+using IndividualLoginExample.BizObjects.Models;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace IndividualLoginExample
+namespace IndividualLoginExample.BizObjects
 {
     public class MyDBUserStore : IUserStore<User, int>, 
         IUserPasswordStore<User, int>,

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IndividualLoginExample.Helpers
+namespace IndividualLoginExample.BizObjects.Helpers
 {
     public static class IDataReaderExtensions
     {

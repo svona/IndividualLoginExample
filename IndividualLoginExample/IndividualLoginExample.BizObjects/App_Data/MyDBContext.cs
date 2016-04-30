@@ -9,10 +9,10 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.SqlClient;
 using System.Linq;
 using CodeFirstStoreFunctions;
-using IndividualLoginExample.Models;
-using IndividualLoginExample.Helpers;
+using IndividualLoginExample.BizObjects.Models;
+using IndividualLoginExample.BizObjects.Helpers;
 
-namespace IndividualLoginExample
+namespace IndividualLoginExample.BizObjects
 {
     public class MyDBContext : DbContext
     {

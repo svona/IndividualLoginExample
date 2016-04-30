@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using DevTrends.MvcDonutCaching;
+using IndividualLoginExample.BizObjects.Models;
 using IndividualLoginExample.Models;
 using Microsoft.AspNet.Identity;
 
@@ -17,11 +18,7 @@ namespace IndividualLoginExample.Controllers
         // GET: Role
         public ActionResult Index()
         {
-            var model = Enumerable.Range(0, 100)
-                .Select(b => new Role { Name = Guid.NewGuid().ToString().Replace("-", String.Empty) })
-                .ToList();
-
-            return View(model);
+            return View();
 
             // return View(this.RoleManager.Roles.ToList());
         }
@@ -70,6 +67,7 @@ namespace IndividualLoginExample.Controllers
                 return View(model);
             }
 
+            model.CreationDateUTC = DateTime.UtcNow;
             var result = this.RoleManager.Create(model);
 
             if (!result.Succeeded)

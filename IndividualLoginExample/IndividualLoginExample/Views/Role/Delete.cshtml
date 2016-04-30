@@ -1,4 +1,4 @@
-﻿@model IndividualLoginExample.Models.Role
+﻿@model IndividualLoginExample.BizObjects.Models.Role
 @{
     ViewBag.Title = "Role Delete";
 }
@@ -23,6 +23,7 @@
         @Html.AntiForgeryToken()
         @Html.HiddenFor(m => m.Id)
         @Html.HiddenFor(m => m.Name)
+        @Html.Hidden("CreationDateUTC", Model.CreationDateUTC.ToString("yyyy-MM-dd HH:mm:ss.fff"))
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |

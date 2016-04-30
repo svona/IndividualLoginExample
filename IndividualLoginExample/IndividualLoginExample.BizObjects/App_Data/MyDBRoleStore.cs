@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-using IndividualLoginExample.Models;
+using IndividualLoginExample.BizObjects.Models;
 using Microsoft.AspNet.Identity;
 using System.Linq;
 
-namespace IndividualLoginExample
+namespace IndividualLoginExample.BizObjects
 {
     public class MyDBRoleStore : IRoleStore<Role, int>, 
         IQueryableRoleStore<Role, int>

@@ -4,7 +4,8 @@ using System.Linq;
 using System.Web;
 using IndividualLoginExample;
 using IndividualLoginExample.App_Start.IdentityConfig;
-using IndividualLoginExample.Models;
+using IndividualLoginExample.BizObjects;
+using IndividualLoginExample.BizObjects.Models;
 using IndividualLoginExample.Properties;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -38,7 +39,7 @@ namespace IndividualLoginExample
                     // This is a security feature which is used when you change a password or add an external login to your account.  
                     OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<AppUserManager, User, int>(
                         validateInterval: TimeSpan.FromMinutes(Settings.Default.PermittedSessionIdleTimeInMinutes),
-                        regenerateIdentityCallback: (manager, user) => user.GenerateUserIdentityAsync(manager),
+                        regenerateIdentityCallback: (manager, user) => manager.GenerateUserIdentityAsync(user),
                         getUserIdCallback: (id) => id.GetUserId<int>())
                 }
             });

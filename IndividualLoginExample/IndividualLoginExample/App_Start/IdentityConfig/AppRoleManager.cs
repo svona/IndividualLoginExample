@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
-using IndividualLoginExample.Crypto;
-using IndividualLoginExample.Helpers;
-using IndividualLoginExample.Models;
-using IndividualLoginExample.Properties;
+﻿using IndividualLoginExample.BizObjects;
+using IndividualLoginExample.BizObjects.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;

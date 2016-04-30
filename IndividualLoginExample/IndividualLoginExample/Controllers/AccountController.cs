@@ -9,6 +9,7 @@ using IndividualLoginExample.Models;
 using IndividualLoginExample.Properties;
 using Microsoft.Owin;
 using Microsoft.AspNet.Identity;
+using IndividualLoginExample.BizObjects.Models;
 
 namespace IndividualLoginExample.Controllers
 {

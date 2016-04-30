@@ -1,4 +1,4 @@
-﻿@model IndividualLoginExample.Models.Role
+﻿@model IndividualLoginExample.BizObjects.Models.Role
 @{
     ViewBag.Title = "Role Edit";
 }
@@ -12,6 +12,7 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
+        @Html.Hidden("CreationDateUTC", Model.CreationDateUTC.ToString("yyyy-MM-dd HH:mm:ss.fff"))
 
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
